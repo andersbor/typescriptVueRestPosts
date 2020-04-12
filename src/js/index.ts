@@ -1,12 +1,37 @@
-interface Person {
-    firstName: string;
-    lastName: string;
+import axios, {
+    AxiosResponse,
+    AxiosError
+} from "../../node_modules/axios/index";
+
+interface IPost {
+    // attributes from http://jsonplaceholder.typicode.com/posts
+    id: number;
+    userId: number;
+    title: string;
+    body: string;
 }
 
-function greeter(person: Person): string {
-    return "Hello, " + person.firstName + " " + person.lastName;
-}
-let user: Person = { firstName: "John", lastName: "Doe" };
-
-let element: HTMLDivElement = <HTMLDivElement> document.getElementById("content");
-element.innerHTML = greeter(user);
+// https://alligator.io/vuejs/rest-api-axios/
+new Vue({
+    el: '#app',
+    data: {
+        posts: [],
+        errors: []
+    },
+    created() { // created() is a life cycle method, not an ordinary method
+        console.log("created method called")
+        axios.get<IPost[]>("http://jsonplaceholder.typicode.com/posts")
+            .then((response: AxiosResponse<IPost[]>) => {
+                console.log(response.data)
+                this.posts = response.data
+            })
+            .catch((e: AxiosError) => {
+                this.errors.push(e)
+            });
+    },
+    methods: {
+        cleanList() {
+            this.posts = []
+        }
+    }
+})
