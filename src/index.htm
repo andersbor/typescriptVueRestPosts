@@ -14,9 +14,19 @@
   <div id="app">
     <button v-on:click="cleanList">Clean the list</button>
 
+    <input v-model.lazy="userId" placeholder="User Id" type="number">
+    <button v-on:click="getByUserId(userId)">Get By UserId</button>
+
     <ul v-if="posts.length">
       <li v-for="post in posts">
-        {{post.id}} {{post.title}}
+        UserId {{post.userId}} : {{post.title}}
+      </li>
+    </ul>
+    <div v-else>No such posts</div>
+
+    <ul v-if="errors && errors.length">
+      <li v-for="error of errors">
+        {{error.message}}
       </li>
     </ul>
   </div>

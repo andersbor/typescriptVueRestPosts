@@ -16,7 +16,8 @@ new Vue({
     el: '#app',
     data: {
         posts: [],
-        errors: []
+        errors: [],
+        userId: ""
     },
     created() { // created() is a life cycle method, not an ordinary method
         console.log("created method called")
@@ -32,6 +33,18 @@ new Vue({
     methods: {
         cleanList() {
             this.posts = []
+        },
+        getByUserId(uid: number) {
+            let uri = "http://jsonplaceholder.typicode.com/posts?userId=" + uid;
+            console.log("getByUserId: " + uri);
+            axios.get<IPost[]>(uri)
+                .then((response: AxiosResponse<IPost[]>) => {
+                    console.log(response.data)
+                    this.posts = response.data
+                })
+                .catch((e: AxiosError) => {
+                    this.errors.push(e)
+                });
         }
     }
 })
