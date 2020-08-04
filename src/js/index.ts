@@ -11,6 +11,8 @@ interface IPost {
     body: string;
 }
 
+let baseUri: string = "http://jsonplaceholder.typicode.com/posts"
+
 // https://alligator.io/vuejs/rest-api-axios/
 new Vue({
     el: '#app',
@@ -21,7 +23,7 @@ new Vue({
     },
     created() { // created() is a life cycle method, not an ordinary method
         console.log("created method called")
-        axios.get<IPost[]>("http://jsonplaceholder.typicode.com/posts")
+        axios.get<IPost[]>(baseUri)
             .then((response: AxiosResponse<IPost[]>) => {
                 console.log(response.data)
                 this.posts = response.data
@@ -35,7 +37,7 @@ new Vue({
             this.posts = []
         },
         getByUserId(uid: number) {
-            let uri = "http://jsonplaceholder.typicode.com/posts?userId=" + uid;
+            let uri = baseUri+ "?userId=" + uid;
             console.log("getByUserId: " + uri);
             axios.get<IPost[]>(uri)
                 .then((response: AxiosResponse<IPost[]>) => {
